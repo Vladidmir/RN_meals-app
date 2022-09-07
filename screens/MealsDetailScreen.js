@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Button,
-  StyleSheet,
-} from "react-native";
+import { useContext } from "react";
+import { Text, View, Image, ScrollView, StyleSheet } from "react-native";
 import { MEALS } from "../data/dummy-data";
 
 import MealDetails from "../components/MealDetails";
@@ -14,8 +8,11 @@ import Subtitle from "../components/Subtitle";
 import GuideList from "../components/GuideList";
 import IconButton from "../components/IconButton.js";
 
+import { FavoritesContext } from "../store/context/favoritesContext";
+
 const MealsDetailScreen = ({ route, navigation }) => {
   const { mealId } = route.params;
+  const { addFavorite, removeFavorite, ids } = useContext(FavoritesContext);
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
   const {
@@ -28,8 +25,14 @@ const MealsDetailScreen = ({ route, navigation }) => {
     steps,
   } = selectedMeal;
 
-  const headerButtonHandler = () => {
-    console.log("Pressed");
+  const mealIsFavorite = ids.includes(mealId);
+
+  const changeFavoriteHandler = () => {
+    if (mealIsFavorite) {
+      removeFavorite(mealId);
+    } else {
+      addFavorite(mealId);
+    }
   };
 
   React.useLayoutEffect(() => {
@@ -37,15 +40,15 @@ const MealsDetailScreen = ({ route, navigation }) => {
       headerRight: () => {
         return (
           <IconButton
-            onPress={headerButtonHandler}
+            onPress={changeFavoriteHandler}
             iconSize={22}
-            iconName={"star"}
+            iconName={mealIsFavorite ? "star" : "star-outline"}
             iconColor="white"
           />
         );
       },
     });
-  }, [navigation, headerButtonHandler]);
+  }, [navigation, changeFavoriteHandler]);
 
   return (
     <ScrollView style={s.rootContainer}>

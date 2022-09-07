@@ -66,6 +66,12 @@ const s = StyleSheet.create({
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
     overflow: Platform.OS === "android" ? "hidden" : "visible",
+    // borderTopColor: "#e2b497",
+    // borderBottomColor: "#e2b497",
+    // borderLeftColor: "#e2b497",
+    // borderBottomColor: "#e2b497",
+
+    borderWidth: 2,
   },
   innerCintainer: {
     borderRadius: 8,
